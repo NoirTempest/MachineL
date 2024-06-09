@@ -1,0 +1,108 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Bauhaus+93&display=swap');
+
+.font-bauhaus {
+  font-family: 'Bauhaus 93', sans-serif;
+}
+
+
+body {
+  background: #0c0c0c;
+  /* Dark background */
+  color: #fff;
+  /* White text color */
+  max-height: 800px;
+}
+
+.container {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Apply Poppins font specifically to the headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+.card {
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+    0 0 40px rgba(0, 255, 255, 0.5),
+    0 0 60px rgba(0, 255, 255, 0.5);
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease-in-out;
+  background-color: #1f1f1f;
+  /* Dark card background */
+  color: #fff;
+  /* White text color */
+}
+
+.card:hover {
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.7),
+    0 0 80px rgba(0, 255, 255, 0.7),
+    0 0 120px rgba(0, 255, 255, 0.7);
+}
+
+.prediction-result {
+  position: relative;
+  background-color: #333;
+  /* Dark result background */
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.btn {
+  width: 100%;
+  /* Full width within its container */
+  background: #f8c10df1;
+  border: none;
+  margin-top: 10px;
+  /* Adjust margin to create space between buttons */
+}
+
+.btn-second {
+  color: #fff;
+  width: 40%;
+  /* Full width within its container */
+  background: #f8c10df1;
+  border: none;
+}
+
+.btn:hover {
+  background: #9c9b9b;
+}
+
+#imageContainer {
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  /* Add margin at the bottom to create space between image and buttons */
+}
+
+
+
+#line {
+  border-left: 1px solid rgb(112, 109, 109);
+  height: 100%;
+}
+
+/* Set the size of the video element */
+#video {
+  width: 200px;
+  /* Adjust the width as needed */
+  height: auto;
+  /* Auto-adjust height to maintain aspect ratio */
+  background-color: #1f1f1f;
+  /* Dark video background */
+  border: 1px solid #fff;
+  /* White border */
+}

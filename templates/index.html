@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Classifier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Add this meta tag for responsive scaling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css">
+    <!-- Favicons -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mx-auto mt-5" style="max-width: 800px;">
+            <div class="card-header">
+                <h1 class="text-center font-bauhaus">Image processing</h1>
+                <div class="text-center" style="text-align: center;">
+                    <h3 class="text-sm" style="font-size: 10px;">Identifying dog breeds</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="p-3 text-center" action='/' method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- Left Side: Image Display -->
+                        <div class="col-md-5">
+                            <div id="imageContainer" class="text-center" style="height: 200px;">
+                                <video id="video" autoplay style="display:none;"></video>
+                                {% if image_path %}
+                                <img id="uploadedImage" src="{{ image_path }}"
+                                    style="width: 100%; height: 100%; object-fit: cover;" />
+                                {% endif %}
+                            </div>
+                            {% if prediction %}
+                            <div class="prediction-result text-center mt-3">
+                                <p><b>Dog Breed: <br> {{ prediction }}</b></p>
+                                {% if confidence is defined %}
+                                <p><b>Confidence: {{ confidence | round(2) }}%</b></p>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Divider Line -->
+                        <div class="col-md-1 d-flex justify-content-center align-items-center">
+                            <div class="line"></div>
+                        </div>
+
+                        <!-- Right Side: Form and Upload -->
+                        <div class="col-md-6">
+                            <div class="prediction-result">
+                                <div class="mb-3">
+                                    <label for="imagefile" class="form-label">Upload Image</label>
+                                    <input class="form-control" type="file" id="imagefile" name="imagefile"
+                                        onchange="displayImage(event)">
+                                </div>
+                                <p class="or-use-camera text-center">or <br>Camera for <br> Laptop/Pc</p>
+                                <!-- "Or use camera" text -->
+                                <button class="btn btn-second mt-3" type="button" onclick="openCamera()">Camera</button>
+                                <button class="btn btn-second mt-3" type="button" onclick="capture()">Capture</button>
+                                <input class="btn btn-primary mt-3" type="submit" value="Scan">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- Footer -->
+                <footer class="footer mt-auto py-3 bg-dark text-white absolute top-0 mt-4">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="text-muted text-sm uppercase tracking-wide">© 2024 Rawr. All rights reserved.</span>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <span class="text-muted text-sm uppercase tracking-wide">Designed with ❤️ by Dodong</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>                
+        <!-- End of Footer -->
+            </div>
+        </div>
+        
+    </div>
+
+
+    <script>
+        function openCamera() {
+            const video = document.getElementById('video');
+            video.style.display = 'block'; // Show the video element initially
+
+            // Hide the uploaded image
+            const uploadedImage = document.getElementById('uploadedImage');
+            if (uploadedImage) {
+                uploadedImage.style.display = 'none';
+            }
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function (err) {
+                    console.error('Error accessing camera: ', err);
+                    alert('Error accessing camera. Please check browser permissions.');
+                });
+        }
+
+        function capture() {
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas data to Data URL
+            const dataURL = canvas.toDataURL('image/png');
+
+            // Create a temporary anchor element to trigger download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = dataURL;
+            downloadLink.download = 'captured_image.png'; // Set the filename
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        function displayImage(event) {
+            const uploadedImage = document.getElementById('uploadedImage');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = 'block'; // Show the uploaded image
+
+                // Hide the video element
+                const video = document.getElementById('video');
+                if (video) {
+                    video.style.display = 'none';
+                }
+            }
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+
+</html>
